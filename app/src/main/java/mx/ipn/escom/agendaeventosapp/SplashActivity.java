@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,8 +15,6 @@ import java.util.TimerTask;
 import mx.ipn.escom.agendaeventosapp.ui.MainActivity;
 
 public class SplashActivity extends Activity {
-
-    private long splashDelay = 5000;
     private Handler mTimerHandler = new Handler();
 
     @Override
@@ -33,21 +35,21 @@ public class SplashActivity extends Activity {
                 });
             }
         };
-
         Timer timer = new Timer();
+        long splashDelay = 5000;
         timer.schedule(task, splashDelay);
     }
 
     private void startAnimations() {
-//        Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
-//        anim.reset();
-//        LinearLayout l = (LinearLayout) findViewById(R.id.lin_lay);
-//        l.clearAnimation();
-//        l.startAnimation(anim);
-//        anim = AnimationUtils.loadAnimation(this, R.anim.translate);
-//        anim.reset();
-//        ImageView iv = (ImageView) findViewById(R.id.logo_splash);
-//        iv.clearAnimation();
-//        iv.startAnimation(anim);
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        anim.reset();
+        LinearLayout l = findViewById(R.id.lin_lay);
+        l.clearAnimation();
+        l.startAnimation(anim);
+        anim = AnimationUtils.loadAnimation(this, R.anim.translate);
+        anim.reset();
+        ImageView iv = findViewById(R.id.logo_splash);
+        iv.clearAnimation();
+        iv.startAnimation(anim);
     }
 }
