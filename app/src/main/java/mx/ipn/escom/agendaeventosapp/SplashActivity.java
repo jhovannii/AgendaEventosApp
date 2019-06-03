@@ -21,7 +21,6 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         startAnimations();
         TimerTask task = new TimerTask() {
             @Override
@@ -36,7 +35,7 @@ public class SplashActivity extends Activity {
             }
         };
         Timer timer = new Timer();
-        long splashDelay = 5000;
+        long splashDelay = 3500;
         timer.schedule(task, splashDelay);
     }
 

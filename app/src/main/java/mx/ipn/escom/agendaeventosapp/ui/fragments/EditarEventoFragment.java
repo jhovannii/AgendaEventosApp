@@ -1,5 +1,6 @@
 package mx.ipn.escom.agendaeventosapp.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,19 +31,23 @@ import mx.ipn.escom.agendaeventosapp.R;
 import mx.ipn.escom.agendaeventosapp.adapters.EventoAdapter;
 import mx.ipn.escom.agendaeventosapp.beans.Evento;
 
-public class CrearEventoFragment extends DialogFragment implements RealmChangeListener<RealmResults<Evento>> {
-    public Realm realm;
+@SuppressLint("ValidFragment")
+public class EditarEventoFragment extends DialogFragment implements RealmChangeListener<RealmResults<Evento>> {
+    private RadioButton rbCitaEdit, rbEntregaEdit, rbJuntaEdit, rbExamenEdit, rbOtroEdit;
+    private Realm realm;
+    private Evento mEvento;
     private String titulo;
     private TextView tvTitulo;
     private EditText edtFecha, edtHora, edtDescripcion;
     private Spinner spEstatus;
-    private Button btnGuardar;
+    private Button btnActualizar, btnCancelar;
     private RadioGroup radioGroup;
     private int hour, minute1;
     private EventoAdapter eventoAdapter;
 
-    public CrearEventoFragment() {
-        this.titulo = "Crear Evento";
+    public EditarEventoFragment(Evento evento) {
+        this.mEvento = evento;
+        this.titulo = "Modificar Evento";
     }
 
     @Override
@@ -55,35 +61,67 @@ public class CrearEventoFragment extends DialogFragment implements RealmChangeLi
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View vista = inflater.inflate(R.layout.fragment_crear_evento, null);
-        realm = Realm.getDefaultInstance();
-        RealmResults<Evento> listaEventos = realm.where(Evento.class).findAll();
-        listaEventos.addChangeListener(this);
-        eventoAdapter = new EventoAdapter(listaEventos);
+        View vista = inflater.inflate(R.layout.fragment_editar_evento, null);
         iniciarElementosVisuales(vista);
-        llenarCampos();
+        llenarSpinner();
+        inicializarVariables();
         builder.setView(vista);
         return builder.create();
     }
 
+    private void inicializarVariables() {
+        realm = Realm.getDefaultInstance();
+        RealmResults<Evento> listaEventos = realm.where(Evento.class).findAll();
+        listaEventos.addChangeListener(this);
+        eventoAdapter = new EventoAdapter(listaEventos);
+
+        tvTitulo.setText(titulo);
+        edtDescripcion.setText(mEvento.getDescripcion());
+        edtFecha.setText(mEvento.getFecha());
+        edtHora.setText(mEvento.getHora());
+
+        if (mEvento.getStatusEvento().equalsIgnoreCase("pendiente")) {
+            spEstatus.setSelection(0);
+        } else if (mEvento.getStatusEvento().equalsIgnoreCase("realizado")) {
+            spEstatus.setSelection(1);
+        } else if (mEvento.getStatusEvento().equalsIgnoreCase("aplazado")) {
+            spEstatus.setSelection(2);
+        }
+
+        if (mEvento.getTipoEvento().equalsIgnoreCase("cita")) {
+            rbCitaEdit.setChecked(true);
+        } else if (mEvento.getTipoEvento().equalsIgnoreCase("junta")) {
+            rbJuntaEdit.setChecked(true);
+        } else if (mEvento.getTipoEvento().equalsIgnoreCase("entrega")) {
+            rbEntregaEdit.setChecked(true);
+        } else if (mEvento.getTipoEvento().equalsIgnoreCase("examen")) {
+            rbExamenEdit.setChecked(true);
+        } else if (mEvento.getTipoEvento().equalsIgnoreCase("otro")) {
+            rbOtroEdit.setChecked(true);
+        }
+        hour = Integer.parseInt(mEvento.getHora().substring(0, 2));
+        minute1 = Integer.parseInt(mEvento.getHora().substring(5, 7));
+    }
+
     private void iniciarElementosVisuales(View vista) {
-        tvTitulo = vista.findViewById(R.id.tvTitulo);
-        spEstatus = vista.findViewById(R.id.spStatus);
-        edtFecha = vista.findViewById(R.id.edtFecha);
-        edtHora = vista.findViewById(R.id.edtHora);
-        edtDescripcion = vista.findViewById(R.id.edtDescripcion);
-        btnGuardar = vista.findViewById(R.id.btnGuardar);
-        radioGroup = vista.findViewById(R.id.rgTipoEvento);
-        TextView tvEstatus = vista.findViewById(R.id.tvStatus);
-        spEstatus.setVisibility(View.INVISIBLE);
-        tvEstatus.setVisibility(View.INVISIBLE);
-        spEstatus.setSelection(0);
+        rbCitaEdit = vista.findViewById(R.id.rbCitaEdit);
+        rbEntregaEdit = vista.findViewById(R.id.rbEntregaProyectoEdit);
+        rbJuntaEdit = vista.findViewById(R.id.rbJuntaEdit);
+        rbExamenEdit = vista.findViewById(R.id.rbExamenEdit);
+        rbOtroEdit = vista.findViewById(R.id.rbOtroEdit);
+        tvTitulo = vista.findViewById(R.id.tvTituloEdit);
+        spEstatus = vista.findViewById(R.id.spStatusEdit);
+        edtFecha = vista.findViewById(R.id.edtFechaEdit);
+        edtHora = vista.findViewById(R.id.edtHoraEdit);
+        edtDescripcion = vista.findViewById(R.id.edtDescripcionEdit);
+        btnActualizar = vista.findViewById(R.id.btnActualizar);
+        btnCancelar = vista.findViewById(R.id.btnCancelar);
+        radioGroup = vista.findViewById(R.id.rgTipoEventoEdit);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        tvTitulo.setText(titulo);
         edtHora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,41 +134,55 @@ public class CrearEventoFragment extends DialogFragment implements RealmChangeLi
                 showDatePicker(edtFecha);
             }
         });
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDialog().dismiss();
+            }
+        });
 
-        btnGuardar.setOnClickListener(new View.OnClickListener() {
+        btnActualizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validarCampos()) {
-                    final String fecha = edtFecha.getText().toString();
-                    final String descripcion = edtDescripcion.getText().toString();
-                    final String hora = edtHora.getText().toString();
-                    String categoria = "otro";
+                    String fechaEdit = edtFecha.getText().toString();
+                    String descripcionEdit = edtDescripcion.getText().toString();
+                    String horaEdit = edtHora.getText().toString();
+                    int positionSpinner = spEstatus.getSelectedItemPosition();
+                    realm.beginTransaction();
 
                     int checkedId = radioGroup.getCheckedRadioButtonId();
-                    if (checkedId == R.id.rbCita) {
-                        categoria = "cita";
-                    } else if (checkedId == R.id.rbJunta) {
-                        categoria = "junta";
-                    } else if (checkedId == R.id.rbEntregaProyecto) {
-                        categoria = "entrega";
-                    } else if (checkedId == R.id.rbExamen) {
-                        categoria = "examen";
-                    } else if (checkedId == R.id.rbOtro) {
-                        categoria = "otro";
+                    if (checkedId == R.id.rbCitaEdit) {
+                        mEvento.setTipoEvento("cita");
+                    } else if (checkedId == R.id.rbJuntaEdit) {
+                        mEvento.setTipoEvento("junta");
+                    } else if (checkedId == R.id.rbExamenEdit) {
+                        mEvento.setTipoEvento("examen");
+                    } else if (checkedId == R.id.rbEntregaProyectoEdit) {
+                        mEvento.setTipoEvento("entrega");
+                    } else if (checkedId == R.id.rbOtroEdit) {
+                        mEvento.setTipoEvento("otro");
                     }
-                    guardarEvento(categoria, fecha, hora, descripcion, "pendiente");
+
+                    switch (positionSpinner) {
+                        case 0:
+                            mEvento.setStatusEvento("pendiente");
+                            break;
+                        case 1:
+                            mEvento.setStatusEvento("realizado");
+                            break;
+                        case 2:
+                            mEvento.setStatusEvento("aplazado");
+                            break;
+                    }
+                    mEvento.setFecha(fechaEdit);
+                    mEvento.setHora(horaEdit);
+                    mEvento.setDescripcion(descripcionEdit);
+                    realm.commitTransaction();
+                    getDialog().dismiss();
                 }
             }
         });
-    }
-
-    public void guardarEvento(String categoria, String fecha, String hora, String descripcion, String estatus) {
-        realm.beginTransaction();
-        Evento eventoModelo;
-        eventoModelo = new Evento(categoria, descripcion, fecha, hora, estatus);
-        realm.copyToRealm(eventoModelo);
-        realm.commitTransaction();
-        getDialog().dismiss();
     }
 
     private void showTimePicker(final EditText edtHora) {
@@ -176,7 +228,7 @@ public class CrearEventoFragment extends DialogFragment implements RealmChangeLi
             return true;
     }
 
-    private void llenarCampos() {
+    private void llenarSpinner() {
         ArrayList<String> arrayListAdapter = new ArrayList<>();
         arrayListAdapter.add("Pendiente");
         arrayListAdapter.add("Realizado");
@@ -185,7 +237,7 @@ public class CrearEventoFragment extends DialogFragment implements RealmChangeLi
     }
 
     @Override
-    public void onChange(RealmResults<Evento> eventos) {
+    public void onChange(@NonNull RealmResults<Evento> eventos) {
         eventoAdapter.notifyDataSetChanged();
     }
 }

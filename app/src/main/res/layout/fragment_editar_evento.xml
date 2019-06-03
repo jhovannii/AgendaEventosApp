@@ -8,15 +8,15 @@
     tools:context=".ui.fragments.CrearEventoFragment">
 
     <LinearLayout
-        android:id="@+id/llEncabezado"
+        android:id="@+id/llEncabezadoEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tvTitulo"
+            android:id="@+id/tvTituloEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+            android:background="@color/colorPrimary"
             android:gravity="center_horizontal"
             android:padding="10dp"
             android:text="@string/titulo"
@@ -25,7 +25,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llTodo"
+        android:id="@+id/llTodoEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -33,19 +33,19 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/llCampos"
+            android:id="@+id/llCamposEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RadioGroup
-                android:id="@+id/rgTipoEvento"
+                android:id="@+id/rgTipoEventoEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/rbCita"
+                    android:id="@+id/rbCitaEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -53,7 +53,7 @@
                     android:textSize="4pt" />
 
                 <RadioButton
-                    android:id="@+id/rbJunta"
+                    android:id="@+id/rbJuntaEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -61,7 +61,7 @@
                     android:textSize="4pt" />
 
                 <RadioButton
-                    android:id="@+id/rbExamen"
+                    android:id="@+id/rbExamenEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -69,16 +69,15 @@
                     android:textSize="4pt" />
 
                 <RadioButton
-                    android:id="@+id/rbOtro"
+                    android:id="@+id/rbOtroEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:checked="true"
                     android:text="@string/otro"
                     android:textSize="4pt" />
 
                 <RadioButton
-                    android:id="@+id/rbEntregaProyecto"
+                    android:id="@+id/rbEntregaProyectoEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -87,7 +86,7 @@
             </RadioGroup>
 
             <LinearLayout
-                android:id="@+id/llFecha"
+                android:id="@+id/llFechaEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
@@ -102,7 +101,7 @@
                     android:textSize="6pt" />
 
                 <EditText
-                    android:id="@+id/edtFecha"
+                    android:id="@+id/edtFechaEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
@@ -118,7 +117,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llHora"
+                android:id="@+id/llHoraEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
@@ -133,7 +132,7 @@
                     android:textSize="6pt" />
 
                 <EditText
-                    android:id="@+id/edtHora"
+                    android:id="@+id/edtHoraEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
@@ -149,7 +148,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llDescripcion"
+                android:id="@+id/llDescripcionEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
@@ -164,7 +163,7 @@
                     android:textSize="6pt" />
 
                 <EditText
-                    android:id="@+id/edtDescripcion"
+                    android:id="@+id/edtDescripcionEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
@@ -175,14 +174,14 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llStatus"
+                android:id="@+id/llStatusEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tvStatus"
+                    android:id="@+id/tvStatusEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
@@ -191,7 +190,7 @@
                     android:textSize="6pt" />
 
                 <Spinner
-                    android:id="@+id/spStatus"
+                    android:id="@+id/spStatusEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
@@ -200,9 +199,17 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnGuardar"
+            android:id="@+id/btnActualizar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/guardar" />
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/actualizar" />
+
+        <Button
+            android:id="@+id/btnCancelar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="@string/cancelar" />
     </LinearLayout>
 </LinearLayout>
