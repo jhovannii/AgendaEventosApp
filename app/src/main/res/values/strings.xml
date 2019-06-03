@@ -19,4 +19,6 @@
     <string name="tipo_de_evento">Tipo de Evento</string>
     <string name="actualizar">Actualizar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="busqueda_vacia">No se encontraron eventos</string>
+    <string name="buscar">Buscar</string>
 </resources>

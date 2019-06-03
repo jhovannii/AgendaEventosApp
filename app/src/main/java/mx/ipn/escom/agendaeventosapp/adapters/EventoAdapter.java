@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mx.ipn.escom.agendaeventosapp.R;
@@ -66,6 +67,10 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.ViewHolder
             onLongClickListener.onLongClick(view);
         }
         return false;
+    }
+
+    public void setLista(ArrayList<Evento> lista) {
+        this.listaEvento = lista;
     }
 
     class ViewHolderEvento extends RecyclerView.ViewHolder {

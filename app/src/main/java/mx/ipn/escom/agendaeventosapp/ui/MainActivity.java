@@ -2,14 +2,20 @@ package mx.ipn.escom.agendaeventosapp.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -33,6 +39,26 @@ public class MainActivity extends AppCompatActivity implements RealmChangeListen
         setContentView(R.layout.activity_main);
         realm = Realm.getDefaultInstance();
         findViewID();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Eventos");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_buscarEvento) {
+            Intent searchIntent = new Intent(this, BusquedaActivity.class);
+            startActivity(searchIntent);
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     private void findViewID() {
