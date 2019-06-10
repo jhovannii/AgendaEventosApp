@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">AgendaEventosApp</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="titulo">Titulo</string>
+    <string name="fecha">Fecha</string>
+    <string name="cita">Cita</string>
+    <string name="junta">Junta</string>
+    <string name="entrega_de_proyecto">Entrega</string>
+    <string name="examen">Examen</string>
+    <string name="otro">Otro</string>
+    <string name="hint_fecha">dd/mm/aaaa</string>
+    <string name="hora">Hora</string>
+    <string name="hint_hora">--:--</string>
+    <string name="descripcion">Descripción</string>
+    <string name="estatus">Estatus</string>
+    <string name="guardar">Guardar</string>
+    <string name="tipo_de_evento">Tipo de Evento</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="busqueda_vacia">No se encontraron eventos</string>
+    <string name="buscar">Buscar</string>
+</resources>
